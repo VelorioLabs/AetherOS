@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AetherOS · Sovereign In-Browser Micro-Kernel Operating System</title>
+  <meta name="description" content="Sovereign web-native micro-kernel operating system with glassmorphism window compositor, Unix VFS, and multitasking app suite.">
+  
+  <!-- Tailwind CSS -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: {
+              lime: '#ccff00',
+              'lime-hover': '#b8e600',
+              cyan: '#38bdf8',
+              obsidian: '#050507',
+              surface1: '#0b0d12',
+              surface2: '#12151e',
+              surface3: '#181d28',
+            }
+          },
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'system-ui', 'sans-serif'],
+            display: ['"Space Grotesk"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          }
+        }
+      }
+    }
+  </script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="icon" type="image/png" href="public/assets/logo.png">
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600;700&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Grotesk:wght@500;700&display=swap');
+    
+    body {
+      background-color: #030406;
+      color: #f4f4f5;
+      font-family: 'Plus Jakarta Sans', sans-serif;
+      overflow: hidden;
+      user-select: none;
+    }
+    .font-mono { font-family: 'JetBrains Mono', monospace; }
+    .font-display { font-family: 'Space Grotesk', sans-serif; }
+    
+    .desktop-bg {
+      background: radial-gradient(circle at 50% 20%, rgba(204, 255, 0, 0.08) 0%, rgba(56, 189, 248, 0.05) 40%, rgba(5, 5, 7, 0.95) 100%), #050507;
+      background-size: cover;
+    }
+  </style>
+</head>
+<body class="w-screen h-screen flex flex-col antialiased selection:bg-[#ccff00] selection:text-black desktop-bg overflow-hidden relative">
+
+  <!-- Topbar / Global OS Menu -->
+  <header class="h-8 bg-[#050507]/80 backdrop-blur-xl border-b border-white/5 px-4 flex items-center justify-between text-xs font-mono select-none z-50 flex-shrink-0">
+    <div class="flex items-center gap-4">
+      <div class="flex items-center gap-2 cursor-pointer group">
+        <img src="public/assets/logo.png" alt="Velorio Labs" class="w-4 h-4 rounded-full">
+        <span class="font-bold text-white tracking-wider">AetherOS</span>
+      </div>
+      <div class="hidden sm:flex items-center gap-3 text-zinc-400 text-[11px]">
+        <span class="hover:text-white cursor-pointer transition-colors">File</span>
+        <span class="hover:text-white cursor-pointer transition-colors">Edit</span>
+        <span class="hover:text-white cursor-pointer transition-colors">View</span>
+        <span class="hover:text-white cursor-pointer transition-colors">Window</span>
+        <span class="hover:text-white cursor-pointer transition-colors">Help</span>
+      </div>
+    </div>
+
+    <!-- Right Telemetry & Status Badges -->
+    <div class="flex items-center gap-4 text-[11px] text-zinc-400">
+      <div class="hidden md:flex items-center gap-2 bg-white/5 border border-white/10 px-2.5 py-0.5 rounded-full">
+        <span class="w-1.5 h-1.5 rounded-full bg-[#ccff00] animate-pulse"></span>
+        <span class="text-zinc-300">KERNEL ONLINE</span>
+      </div>
+
+      <div class="flex items-center gap-3">
+        <i class="fa-solid fa-wifi text-zinc-300"></i>
+        <i class="fa-solid fa-battery-full text-[#ccff00]"></i>
+        <span id="topbarClock" class="text-white font-bold">12:00 PM</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Desktop Work Area (Window Compositor Viewport) -->
+  <div id="desktopViewport" class="flex-1 relative overflow-hidden">
+    
+    <!-- Desktop Shortcuts Grid -->
+    <div class="absolute top-6 left-6 grid grid-flow-row gap-6 font-mono text-[11px] z-0">
+      <div class="dock-item flex flex-col items-center gap-1.5 cursor-pointer group w-18" data-app="terminal">
+        <div class="w-12 h-12 rounded-2xl bg-black/60 border border-white/10 group-hover:border-[#ccff00]/60 flex items-center justify-center text-lg text-white group-hover:scale-105 transition-all shadow-lg backdrop-blur">
+          <i class="fa-solid fa-terminal text-[#ccff00]"></i>
+        </div>
+        <span class="text-zinc-300 text-center truncate max-w-[70px]">Terminal</span>
+      </div>
+
+      <div class="dock-item flex flex-col items-center gap-1.5 cursor-pointer group w-18" data-app="omnigrab">
+        <div class="w-12 h-12 rounded-2xl bg-black/60 border border-white/10 group-hover:border-[#ccff00]/60 flex items-center justify-center text-lg text-white group-hover:scale-105 transition-all shadow-lg backdrop-blur">
+          <i class="fa-solid fa-bolt text-[#ccff00]"></i>
+        </div>
+        <span class="text-zinc-300 text-center truncate max-w-[70px]">OmniGrab</span>
+      </div>
+
+      <div class="dock-item flex flex-col items-center gap-1.5 cursor-pointer group w-18" data-app="cloudfuse">
+        <div class="w-12 h-12 rounded-2xl bg-black/60 border border-white/10 group-hover:border-sky-400/60 flex items-center justify-center text-lg text-white group-hover:scale-105 transition-all shadow-lg backdrop-blur">
+          <i class="fa-solid fa-shield-halved text-sky-400"></i>
+        </div>
+        <span class="text-zinc-300 text-center truncate max-w-[70px]">CloudFuse</span>
+      </div>
+
+      <div class="dock-item flex flex-col items-center gap-1.5 cursor-pointer group w-18" data-app="aetherstream">
+        <div class="w-12 h-12 rounded-2xl bg-black/60 border border-white/10 group-hover:border-emerald-400/60 flex items-center justify-center text-lg text-white group-hover:scale-105 transition-all shadow-lg backdrop-blur">
+          <i class="fa-solid fa-headphones text-emerald-400"></i>
+        </div>
+        <span class="text-zinc-300 text-center truncate max-w-[70px]">Music</span>
+      </div>
+
+      <div class="dock-item flex flex-col items-center gap-1.5 cursor-pointer group w-18" data-app="taskmanager">
+        <div class="w-12 h-12 rounded-2xl bg-black/60 border border-white/10 group-hover:border-[#ccff00]/60 flex items-center justify-center text-lg text-white group-hover:scale-105 transition-all shadow-lg backdrop-blur">
+          <i class="fa-solid fa-chart-line text-[#ccff00]"></i>
+        </div>
+        <span class="text-zinc-300 text-center truncate max-w-[70px]">Activity</span>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Bottom Floating Dock -->
+  <footer class="h-18 flex items-center justify-center p-3 z-50 select-none flex-shrink-0">
+    <div class="bg-[#080a0f]/80 border border-white/10 backdrop-blur-2xl rounded-3xl px-4 py-2 flex items-center gap-3 shadow-2xl">
+      
+      <!-- Terminal -->
+      <button class="dock-item relative p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex flex-col items-center group" data-app="terminal" title="AetherTerm Terminal">
+        <i class="fa-solid fa-terminal text-[#ccff00] text-lg"></i>
+        <span class="dock-dot hidden w-1 h-1 rounded-full bg-[#ccff00] absolute bottom-1"></span>
+      </button>
+
+      <!-- OmniGrab -->
+      <button class="dock-item relative p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex flex-col items-center group" data-app="omnigrab" title="OmniGrab Decompiler">
+        <i class="fa-solid fa-bolt text-[#ccff00] text-lg"></i>
+        <span class="dock-dot hidden w-1 h-1 rounded-full bg-[#ccff00] absolute bottom-1"></span>
+      </button>
+
+      <!-- CloudFuse -->
+      <button class="dock-item relative p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex flex-col items-center group" data-app="cloudfuse" title="CloudFuse Virtual Drive (Z:\)">
+        <i class="fa-solid fa-shield-halved text-sky-400 text-lg"></i>
+        <span class="dock-dot hidden w-1 h-1 rounded-full bg-sky-400 absolute bottom-1"></span>
+      </button>
+
+      <!-- AetherStream -->
+      <button class="dock-item relative p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex flex-col items-center group" data-app="aetherstream" title="AetherStream Music Player">
+        <i class="fa-solid fa-headphones text-emerald-400 text-lg"></i>
+        <span class="dock-dot hidden w-1 h-1 rounded-full bg-emerald-400 absolute bottom-1"></span>
+      </button>
+
+      <div class="h-6 w-px bg-white/10 mx-1"></div>
+
+      <!-- Task Manager -->
+      <button class="dock-item relative p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex flex-col items-center group" data-app="taskmanager" title="Process Monitor">
+        <i class="fa-solid fa-chart-line text-white text-lg"></i>
+        <span class="dock-dot hidden w-1 h-1 rounded-full bg-white absolute bottom-1"></span>
+      </button>
+
+      <!-- Portal Exit -->
+      <a href="../index.html" class="p-2.5 rounded-2xl bg-white/5 hover:bg-white/10 hover:scale-115 transition-all flex items-center justify-center" title="Return to VelorioLabs Portal">
+        <i class="fa-solid fa-arrow-right-from-bracket text-zinc-400 hover:text-white text-lg"></i>
+      </a>
+
+    </div>
+  </footer>
+
+  <script type="module" src="../src/main.js"></script>
+</body>
+</html>

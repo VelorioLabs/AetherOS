@@ -1,0 +1,23 @@
+{
+  "name": "aetheros",
+  "version": "1.0.0",
+  "description": "Sovereign In-Browser Micro-Kernel Operating System & WebGPU Compositor",
+  "main": "src/main.js",
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.js",
+    "test": "node tests/kernel.test.js"
+  },
+  "keywords": [
+    "operating-system",
+    "micro-kernel",
+    "webgpu",
+    "vfs",
+    "process-scheduler",
+    "window-manager",
+    "desktop-os",
+    "veloriolabs"
+  ],
+  "author": "Velorio Labs <gowdavarshan466@gmail.com>",
+  "license": "MIT"
+}
