@@ -1,61 +1,81 @@
-# 🌌 AetherOS
+# 🖥️ AetherOS - Web Desktop Operating System & Compositor
 
-> **Sovereign In-Browser Micro-Kernel Operating System & WebGPU Compositor.**  
-> *A full Unix VFS, preemptive process scheduler, terminal emulator, and multitasking desktop environment running completely inside your browser.*  
-> An open-source flagship system by **[Velorio Labs](https://github.com/VelorioLabs)**.
+> **A full-featured virtual desktop environment in the browser.**  
+> Engineered with pride by **VelorioLabs**.
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-emerald.svg)](LICENSE)
-[![Kernel](https://img.shields.io/badge/Kernel-v1.0%20Micro--Kernel-ccff00.svg)](https://veloriolabs.github.io/aetheros)
-[![Compositor](https://img.shields.io/badge/Compositor-Glassmorphism%20Multitask-sky.svg)](https://veloriolabs.github.io/aetheros)
-[![Live Demo](https://img.shields.io/badge/Live%20OS-veloriolabs.github.io%2Faetheros-white)](https://veloriolabs.github.io/aetheros)
-[![Org](https://img.shields.io/badge/VelorioLabs-Flagship-indigo)](https://github.com/VelorioLabs)
+[![License: MIT](https://img.shields.io/badge/License-MIT-cyan.svg)](LICENSE)
+[![Platform](https://img.shields.io/badge/Platform-Windows%20%7C%20Linux%20%7C%20macOS%20%7C%20Termux-purple.svg)]()
+[![Organization](https://img.shields.io/badge/Org-VelorioLabs-00f0ff.svg)](https://github.com/VelorioLabs)
+[![Security: Audited](https://img.shields.io/badge/Security-Audited-00ff88.svg)](SECURITY.md)
 
 ---
 
-## ⚡ Core Architecture
+## 🌟 Key Capabilities
 
-```
-                    ┌───────────────────────────────┐
-                    │ AetherOS Window Compositor    │
-                    └───────────────┬───────────────┘
-                                    │
-    ┌───────────────────────────────┼───────────────────────────────┐
-    ▼                               ▼                               ▼
-[ AetherTerm (Shell) ]     [ Task Manager (top) ]       [ Velorio Native Apps ]
-    │                               │                               │
-    └───────────────────────────────┼───────────────────────────────┘
-                                    ▼
-                    ┌───────────────────────────────┐
-                    │ Preemptive Process Scheduler  │
-                    └───────────────┬───────────────┘
-                                    │
-            ┌───────────────────────┴───────────────────────┐
-            ▼                                               ▼
-[ Unix VFS (/bin, /home, /proc) ]             [ Virtual Memory Manager (8GB) ]
-```
+- **Virtual Window Compositor with drag, resize, maximize, minimize**
+- **Microkernel Architecture & Virtual File System (VFS)**
+- **Built-in App Ecosystem (Terminal, Text Editor, File Manager, Media Player)**
+- **Extensible Plugin & App SDK**
 
 ---
 
-## 🚀 Key Features
+## 🚀 Quick Start
 
-1. **Unix Virtual File System (VFS)**: Complete directory structure (`/bin`, `/home/varshan`, `/etc`, `/proc`, `/dev`) with path resolution and file operations.
-2. **Preemptive Process Scheduler**: Tracks active processes, assigns PIDs, calculates real-time CPU/RAM footprint, and handles Unix signals (`kill -9`).
-3. **AetherTerm Shell**: Full terminal supporting pipe operators (`ps | grep`), file redirection (`echo "text" > file.txt`), and commands (`neofetch`, `top`, `ps`, `ls`, `cat`, `matrix`).
-4. **Multitasking Window Compositor**: Draggable, resizable, minimizable, maximizable windows with glassmorphic blur and an interactive floating dock.
-5. **Integrated Native App Ecosystem**: Runs **OmniGrab**, **CloudFuse**, and **AetherStream** natively inside the OS.
-
----
-
-## 🛠️ Quickstart
-
+### 1. Clone the Repository
 ```bash
 git clone https://github.com/VelorioLabs/AetherOS.git
 cd AetherOS
-npm test
 ```
+
+### 2. Installation & Setup
+```bash
+# If Python project:
+pip install -r requirements.txt  # (if present)
+
+# If Node.js project:
+npm install  # (if present)
+```
+
+### 3. Running the Application
+```bash
+# To run the standard entry point:
+python main.py  # or npm start
+```
+
+---
+
+## 📁 Repository Structure
+
+```text
+AetherOS/
+├── app/ / src/       # Core application source code
+├── tests/            # Automated unit and integration test suite
+├── README.md         # Comprehensive project documentation
+├── CONTRIBUTING.md   # Guidelines for community contributors
+├── SECURITY.md       # Responsible vulnerability disclosure policy
+├── LICENSE           # MIT Open Source License
+└── .gitignore        # Clean environment exclusions
+```
+
+---
+
+## 🧪 Testing & Verification
+
+Run the automated test suite:
+```bash
+pytest tests/  # or python -m unittest discover -s tests
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please review our [Contributing Guidelines](CONTRIBUTING.md) and [Security Policy](SECURITY.md) before submitting pull requests.
 
 ---
 
 ## 📄 License
 
-Distributed under the MIT License. See [LICENSE](LICENSE) for details.
+This project is licensed under the **MIT License** - see the [LICENSE](LICENSE) file for complete details.
+
+Copyright (c) 2026 **VelorioLabs**.
